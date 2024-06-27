@@ -86,19 +86,31 @@ const ImageCarousel = ({ images }: { images: Image[] }) => {
             </p>
             <div className="border-b border-white border-opacity-40 w-4/5 mx-auto lg:w-full"></div>
             <div className="flex justify-center lg:justify-start space-x-4">
-              <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
-                <a href={images[currentIndex].link}>
-                  <FaArrowUpLong
-                    className="rotate-45 hover:rotate-0 transition-transform duration-300 ease-in-out"
-                    size={20}
-                  />
-                </a>
-              </div>
-              <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
-                <a href={images[currentIndex].github}>
-                  <FaGithub size={20} />
-                </a>
-              </div>
+              {images[currentIndex].link && (
+                <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
+                  <a
+                    href={images[currentIndex].link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaArrowUpLong
+                      className="rotate-45 hover:rotate-0 transition-transform duration-300 ease-in-out"
+                      size={20}
+                    />
+                  </a>
+                </div>
+              )}
+              {images[currentIndex].github && (
+                <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
+                  <a
+                    href={images[currentIndex].github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGithub size={20} />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
 

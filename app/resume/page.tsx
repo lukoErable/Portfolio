@@ -210,7 +210,13 @@ const resumePage = () => {
 
               <div className="bg-blue-950 p-4 rounded-lg bg-opacity-30 cursor-pointer hover:bg-opacity-60">
                 <h2 className="text-blue-900 font-bold">2018-2019</h2>
-                <h1 className="text-xl max-w-38">{t.dutNetworks}</h1>
+                <h1
+                  className="text-xl max-w-xs overflow-hidden"
+                  style={{ overflowWrap: 'break-word' }}
+                >
+                  {t.dutNetworks}
+                </h1>
+
                 <div className="flex">
                   <div className="self-end p mb-2.5 w-2 h-2 bg-blue-900 rounded-full"></div>
                   <div className="p-1 pl-2 text-gray-500">{t.studies}</div>
