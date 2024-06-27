@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   };
   const translations = {
     en: {
-      title: 'Software Developer',
+      title: 'FullStack Developer',
       intro: "Hello I'm",
       name: 'Lucas Fabregoule',
       description:
@@ -33,7 +33,7 @@ const Home: React.FC = () => {
       codeCommits: 'Code commits',
     },
     fr: {
-      title: 'Développeur Logiciel',
+      title: 'Développeur FullStack',
       intro: 'Bonjour, je suis',
       name: 'Lucas Fabregoule',
       description:
@@ -120,7 +120,7 @@ const Home: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link href={'/resume'}>
-            <div className="flex items-center justify-center text-center p-2 px-4 border-2 border-blue-900 rounded-full">
+            <div className="flex items-center justify-center text-center p-2 px-4 border-2 border-blue-900 rounded-full hover:bg-blue-950 hover:border-blue-950">
               <h2 className="text-3xl md:text-5xl font-bold text-white mr-2">
                 4
               </h2>
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
             </div>
           </Link>
           <Link href={'/work'}>
-            <div className="flex items-center justify-center text-center p-2 px-4 border-2 border-blue-900 rounded-full cursor-pointer">
+            <div className="flex items-center justify-center text-center p-2 px-4 border-2 border-blue-900 rounded-full cursor-pointer hover:bg-blue-950 hover:border-blue-950">
               <h2 className="text-3xl md:text-5xl font-bold text-white mr-2">
                 10
               </h2>
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
             </div>
           </Link>
           <Link href={'/resume'}>
-            <div className="flex items-center justify-center text-center p-2 px-4 border-2 border-blue-900 rounded-full cursor-pointer">
+            <div className="flex items-center justify-center text-center p-2 px-4 border-2 border-blue-900 rounded-full cursor-pointer hover:bg-blue-950 hover:border-blue-950">
               <h2 className="text-3xl md:text-5xl font-bold text-white mr-2">
                 5
               </h2>
