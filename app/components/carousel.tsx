@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaLock } from 'react-icons/fa';
 import { FaArrowUpLong } from 'react-icons/fa6';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
@@ -86,7 +86,7 @@ const ImageCarousel = ({ images }: { images: Image[] }) => {
             </p>
             <div className="border-b border-white border-opacity-40 w-4/5 mx-auto lg:w-full"></div>
             <div className="flex justify-center lg:justify-start space-x-4">
-              {images[currentIndex].link && (
+              {images[currentIndex].link ? (
                 <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
                   <a
                     href={images[currentIndex].link}
@@ -99,8 +99,12 @@ const ImageCarousel = ({ images }: { images: Image[] }) => {
                     />
                   </a>
                 </div>
+              ) : (
+                <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
+                  <FaLock size={20} />
+                </div>
               )}
-              {images[currentIndex].github && (
+              {images[currentIndex].github ? (
                 <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
                   <a
                     href={images[currentIndex].github}
@@ -109,6 +113,10 @@ const ImageCarousel = ({ images }: { images: Image[] }) => {
                   >
                     <FaGithub size={20} />
                   </a>
+                </div>
+              ) : (
+                <div className="p-1 sm:p-2 w-fit border-2 text-blue-900 hover:text-black border-blue-900 rounded-full hover:bg-blue-900 hover:border-blue-900 cursor-pointer">
+                  <FaLock size={20} />
                 </div>
               )}
             </div>
