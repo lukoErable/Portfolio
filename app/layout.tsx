@@ -7,8 +7,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'ScanSan',
-  description: 'Lisez vos mangas préférés en ligne',
+  title: 'Portfolio',
+  description: 'Mon portfolio personnel',
 };
 
 export default function RootLayout({
