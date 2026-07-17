@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.55" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark rounded background -->
+  <rect width="64" height="64" rx="14" fill="#050208"/>
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="url(#g)" stroke-opacity="0.35" stroke-width="2"/>
+
+  <!-- </> code mark -->
+  <path d="M22 20 L10 32 L22 44" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 20 L54 32 L42 44" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36 16 L28 48" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Accent dot, echoing the "Lucas." logo -->
+  <circle cx="54" cy="52" r="5" fill="url(#g)"/>
+</svg>

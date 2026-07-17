@@ -79,7 +79,11 @@ function ProjectShowcase() {
         {projects.map((project, i) => {
           const Icon = projectIcons[project.icon] ?? FaGlobe;
           const Card = project.link ? motion.a : motion.div;
+          const fan = (i - mid) * 1.2;
           return (
+            /* Outer layer: entrance animation only (staggered delay).
+               Hover lives on the inner layer so leaving the card snaps
+               back instantly instead of re-waiting the entrance delay. */
             <Card
               key={project.title}
               {...(project.link
@@ -99,7 +103,7 @@ function ProjectShowcase() {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                rotate: (i - mid) * 1.2,
+                rotate: fan,
               }}
               transition={{
                 type: 'spring',
@@ -107,13 +111,12 @@ function ProjectShowcase() {
                 damping: 14,
                 delay: 0.9 + i * 0.18,
               }}
-              whileHover={{
-                y: -12,
-                rotate: 0,
-                scale: 1.03,
-                transition: { type: 'spring', stiffness: 300, damping: 18 },
-              }}
-              className="group relative block cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-colors hover:border-cyan-400/50 hover:shadow-[0_0_40px_rgba(34,211,238,0.25)]"
+              className="block h-full cursor-pointer"
+            >
+            <motion.div
+              whileHover={{ y: -12, scale: 1.03, rotate: -fan }}
+              transition={{ type: 'spring', stiffness: 400, damping: 24 }}
+              className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-colors hover:border-cyan-400/50 hover:shadow-[0_0_40px_rgba(34,211,238,0.25)]"
             >
               {/* Visual header */}
               <div className="relative flex h-32 items-center justify-center bg-gradient-to-br from-cyan-500/15 via-blue-600/10 to-violet-600/25">
@@ -145,6 +148,7 @@ function ProjectShowcase() {
                   ))}
                 </div>
               </div>
+            </motion.div>
             </Card>
           );
         })}
