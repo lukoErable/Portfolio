@@ -1,14 +1,35 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Space_Grotesk } from 'next/font/google';
 import Navbar from './components/navbar';
+import SceneWrapper from './components/SceneWrapper';
 import { LanguageProvider } from './contexts/LanguageContext';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+});
 
 export const metadata: Metadata = {
-  title: 'Portfolio',
-  description: 'Mon portfolio personnel',
+  title: 'Lucas Fabregoule — Développeur Full Stack',
+  description:
+    'Portfolio de Lucas Fabregoule, développeur Full Stack : sites web, applications mobiles iOS, automatisation et outils sur mesure.',
+  keywords: [
+    'Lucas Fabregoule',
+    'développeur full stack',
+    'React',
+    'Next.js',
+    'freelance',
+    'développeur web',
+  ],
+  openGraph: {
+    title: 'Lucas Fabregoule — Développeur Full Stack',
+    description:
+      'Sites web, applications mobiles iOS, automatisation et outils sur mesure.',
+    url: 'https://lucasfabregoule.vercel.app',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
@@ -17,11 +38,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="fr">
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans noise`}
+      >
         <LanguageProvider>
+          <SceneWrapper />
           <Navbar />
-          {children}
+          <div className="relative z-10">{children}</div>
         </LanguageProvider>
       </body>
     </html>

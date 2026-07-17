@@ -1,122 +1,150 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { useContext, useEffect, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { content } from '../data/content';
 import { LanguageContext } from '../contexts/LanguageContext';
 
+const sections = [
+  { id: 'home', key: 'home' },
+  { id: 'about', key: 'about' },
+  { id: 'experience', key: 'experience' },
+  { id: 'skills', key: 'skills' },
+  { id: 'contact', key: 'contact' },
+] as const;
+
 export default function Navbar() {
-  const currentPath = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { language, toggleLanguage } = useContext(LanguageContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const [active, setActive] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
 
-  const linkStyle = (path: any) =>
-    `text-sm cursor-pointer flex justify-center pt-2 border-b-2 ${
-      currentPath === path
-        ? currentPath === '/contact'
-          ? 'text-white border-white'
-          : 'text-blue-900 border-blue-900'
-        : 'border-transparent hover:border-white'
-    }`;
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+  });
 
-  const contactStyle = `p-2 px-4 border-2 bg-blue-900 text-black rounded-full hover:bg-blue-900 hover:text-white hover:border-transparent`;
+  const t = content[language].nav;
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', onScroll, { passive: true });
 
-  const translations = {
-    en: {
-      home: 'Home',
-      services: 'Services',
-      resume: 'Profile',
-      work: 'Work',
-      contact: 'Contact',
-    },
-    fr: {
-      home: 'Accueil',
-      services: 'Services',
-      resume: 'Profil',
-      work: 'Travaux',
-      contact: 'Contact',
-    },
-  };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    sections.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
 
-  const t = translations[language];
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <main className="flex flex-col items-center justify-between p-8">
-      <div className="z-10 w-full max-w-5xl flex items-center justify-between font-bold text-sm">
+    <header
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+        scrolled ? 'glass shadow-lg shadow-black/30' : 'bg-transparent'
+      }`}
+    >
+      {/* Scroll progress bar */}
+      <motion.div
+        style={{ scaleX: progress }}
+        className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-cyan-400 to-violet-500"
+      />
+
+      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
         <div className="flex items-center gap-4">
-          <a
-            className="pointer-events-none flex gap-2 lg:pointer-events-auto"
-            href="/"
-            rel="noopener noreferrer"
-          >
-            <h1 className="font-bold text-4xl">Lucas</h1>
-            <div className="self-end mb-2 w-2 h-2 bg-blue-900 rounded-full"></div>
+          <a href="#home" className="flex items-end gap-1.5">
+            <span className="font-display text-2xl font-bold text-white">
+              Lucas
+            </span>
+            <span className="mb-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
           </a>
           <button
             onClick={toggleLanguage}
-            className="px-2 py-1 bg-blue-900 text-white rounded"
+            className="chip cursor-pointer font-semibold transition-colors hover:border-cyan-400/50 hover:text-cyan-300"
           >
             {language === 'en' ? 'FR' : 'EN'}
           </button>
         </div>
-        <div className="hidden md:flex flex-row space-x-8 w-full justify-end">
-          <Link href="/">
-            <p className={linkStyle('/')}>{t.home}</p>
-          </Link>
-          <Link href="/services">
-            <p className={linkStyle('/services')}>{t.services}</p>
-          </Link>
-          <Link href="/resume">
-            <p className={linkStyle('/resume')}>{t.resume}</p>
-          </Link>
-          <Link href="/work">
-            <p className={linkStyle('/work')}>{t.work}</p>
-          </Link>
-          <Link href="/contact">
-            <p className={`${linkStyle('/contact')} ${contactStyle}`}>
-              {t.contact}
-            </p>
-          </Link>
-        </div>
-        <button className="md:hidden" onClick={toggleSidebar}>
-          <FaBars size={24} />
-        </button>
-      </div>
 
-      {/* Sidebar */}
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-6 md:flex">
+          {sections.map(({ id, key }) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className={`relative text-sm font-medium transition-colors ${
+                active === id ? 'text-cyan-300' : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {t[key]}
+              {active === id && (
+                <motion.span
+                  layoutId="nav-underline"
+                  className="absolute -bottom-1.5 left-0 h-[2px] w-full bg-gradient-to-r from-cyan-400 to-violet-500"
+                />
+              )}
+            </a>
+          ))}
+        </div>
+
+        <button
+          className="text-gray-200 md:hidden"
+          onClick={() => setIsOpen(true)}
+          aria-label="Ouvrir le menu"
+        >
+          <FaBars size={22} />
+        </button>
+      </nav>
+
+      {/* Mobile drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-black z-50 transform transition-transform duration-300 ease-in-out ${
-          isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity md:hidden ${
+          isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
+        onClick={() => setIsOpen(false)}
       >
-        <button className="absolute top-4 right-4" onClick={toggleSidebar}>
-          <FaTimes size={24} />
-        </button>
-        <div className="flex flex-col items-center mt-16 space-y-4">
-          <Link href="/">
-            <p className={linkStyle('/')}>{t.home}</p>
-          </Link>
-          <Link href="/services">
-            <p className={linkStyle('/services')}>{t.services}</p>
-          </Link>
-          <Link href="/resume">
-            <p className={linkStyle('/resume')}>{t.resume}</p>
-          </Link>
-          <Link href="/work">
-            <p className={linkStyle('/work')}>{t.work}</p>
-          </Link>
-          <Link href="/contact">
-            <p className={`${linkStyle('/contact')} ${contactStyle}`}>
-              {t.contact}
-            </p>
-          </Link>
+        <div
+          className={`absolute right-0 top-0 h-full w-72 border-l border-white/10 bg-[#0a0514]/95 p-6 transition-transform duration-300 ${
+            isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="absolute right-4 top-4 text-gray-300"
+            onClick={() => setIsOpen(false)}
+            aria-label="Fermer le menu"
+          >
+            <FaTimes size={22} />
+          </button>
+          <div className="mt-14 flex flex-col gap-5">
+            {sections.map(({ id, key }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={() => setIsOpen(false)}
+                className={`text-lg font-medium ${
+                  active === id ? 'text-gradient' : 'text-gray-300'
+                }`}
+              >
+                {t[key]}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
-
-      <div className="mt-16 relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]"></div>
-    </main>
+    </header>
   );
 }
