@@ -20,7 +20,7 @@ export const content = {
         'Passionné d’automatisation',
       ],
       description:
-        "Développeur Full Stack passionné, je conçois des expériences numériques complètes — de l'interface utilisateur à la gestion des données côté serveur. Curieux et déterminé, j'ai appris en autodidacte un large éventail de langages et de frameworks, du web aux applications iOS publiées sur l'App Store.",
+        "Développeur Full Stack spécialisé dans les applications web et les outils e-commerce, je conçois des produits complets, de l’interface aux API, bases de données, paiements et déploiements. J’aime transformer des besoins métier en solutions fluides et fiables.",
       downloadCV: 'Télécharger mon CV',
       contactMe: 'Me contacter',
       scroll: 'Défiler pour explorer',
@@ -29,13 +29,13 @@ export const content = {
       title: 'Profil',
       subtitle: 'Qui suis-je ?',
       paragraphs: [
-        "En tant que développeur Full Stack passionné, ma curiosité et ma détermination m'ont guidé à travers un parcours d'apprentissage enrichissant. Mon enthousiasme pour la technologie m'a permis d'apprendre un large éventail de langages de programmation et de frameworks, me donnant des bases solides dans le développement de solutions web complètes.",
-        "En parallèle de mes expériences professionnelles, je conçois et développe des sites web, applications et outils sur mesure — notamment une application iOS de musculation publiée sur l'App Store ainsi que plusieurs projets web pour des clients.",
+        "Développeur Full Stack spécialisé dans les applications web et les outils e-commerce, je conçois des produits complets, de l’interface utilisateur aux API, bases de données, paiements et déploiements. J’apprécie les projets concrets qui transforment un besoin métier en solution fluide et fiable.",
+        "Développeur indépendant depuis 2020, je crée des sites, applications et outils sur mesure. J’ai notamment développé plusieurs applications iOS publiées sur l’App Store, une plateforme de création de sites pour artisans et une extension d’automatisation pour Vinted. Après six mois de voyage en Asie, je suis aujourd’hui basé à Taïwan, où j’ai renforcé mon autonomie, mon anglais et mon aisance dans le travail à distance.",
       ],
       infoTitle: 'Informations',
       info: [
         { label: 'Nom', value: 'Lucas Fabregoule' },
-        { label: 'Localisation', value: 'Granges-les-Beaumont, Drôme (26)' },
+        { label: 'Localisation', value: 'Taïwan' },
         { label: 'Téléphone', value: '(+33) 6 62 13 55 22' },
         { label: 'Email', value: 'lucasfabregoule@gmail.com' },
         { label: 'Langues', value: 'Français, Anglais' },
@@ -59,7 +59,21 @@ export const content = {
       title: 'Parcours',
       workTitle: 'Expérience professionnelle',
       eduTitle: 'Formation',
+      viewWork: 'Voir les projets réalisés',
       jobs: [
+        {
+          period: '2026',
+          company: 'FYNERI LLC / TRIVIAN',
+          role: 'Développeur Full Stack',
+          location: 'Remote',
+          points: [
+            'Développement d’un tableau de bord e-commerce connecté à Shopify et WooCommerce',
+            'Intégration de Stripe, PayPal et Shopify Payments',
+            'Création de tunnels de vente, parcours de paiement, promotions et ventes additionnelles',
+            'Synchronisation des produits, commandes et litiges via des API',
+            'Mise en place de l’authentification par e-mail, de webhooks et d’abonnements',
+          ],
+        },
         {
           period: '2025',
           company: 'Air Liquide',
@@ -75,7 +89,7 @@ export const content = {
           ],
         },
         {
-          period: '2022 — Aujourd’hui',
+          period: '2020 — Aujourd’hui',
           company: 'Développeur indépendant',
           role: 'Développeur Full Stack',
           location: 'Remote',
@@ -104,8 +118,8 @@ export const content = {
         {
           period: '2023',
           school: 'École 42 — Lyon',
-          degree: 'Piscine — Programmation en C',
-          text: "Expérience immersive en programmation où, grâce à l'entraide et à la coopération propres à cette école, j'ai acquis des bases solides en langage C.",
+          degree: 'Piscine — Programmation intensive',
+          text: 'Participation à la Piscine de l’École 42, une expérience intensive de programmation axée sur l’entraide, la coopération et la résolution de problèmes.',
         },
         {
           period: '2021',
@@ -126,7 +140,7 @@ export const content = {
       subtitle: 'Les technologies avec lesquelles je travaille au quotidien',
     },
     projects: {
-      title: 'Mes projets',
+      title: 'Mes projets personnels',
       items: [
         {
           title: 'Lukops',
@@ -134,6 +148,7 @@ export const content = {
           text: 'Plateforme de création de sites web tout-en-un pour artisans et indépendants : site, hébergement, nom de domaine et réservation en ligne, en quelques clics.',
           tags: ['Sites web', 'Hébergement', 'Réservations'],
           link: 'https://lukops.com',
+          logo: '/project-logos/lukops.svg',
           icon: 'globe',
         },
         {
@@ -142,7 +157,16 @@ export const content = {
           text: 'Application iOS qui connecte les consommateurs aux producteurs locaux : réservez des produits frais, bio et locaux directement auprès des fermes près de chez vous.',
           tags: ['Swift', 'iOS', 'App Store'],
           link: 'https://apps.apple.com/fr/app/farmly/id6738429325',
+          logo: '/project-logos/farmly.jpg',
           icon: 'seedling',
+        },
+        {
+          title: 'Un Zeste',
+          domain: 'iOS',
+          text: 'Application de cuisine pour enregistrer et organiser ses recettes, notamment celles découvertes dans les Reels Instagram.',
+          tags: ['Swift', 'iOS', 'App Store'],
+          logo: '/project-logos/un-zeste.png',
+          icon: 'appstore',
         },
         {
           title: 'Arise',
@@ -150,6 +174,7 @@ export const content = {
           text: 'Application iOS de suivi de musculation conçue, développée et publiée sur l’App Store : programmes d’entraînement, suivi de progression et statistiques.',
           tags: ['Swift', 'iOS', 'App Store'],
           link: 'https://apps.apple.com/fr/app/arise-shadow-strength/id6759224854',
+          logo: '/project-logos/arise.jpg',
           icon: 'dumbbell',
         },
         {
@@ -158,6 +183,7 @@ export const content = {
           text: 'L’extension Chrome ultime pour Vinted : monitoring en temps réel, filtres avancés et automatisation des offres pour les revendeurs.',
           tags: ['Extension Chrome', 'Monitoring', 'Automatisation'],
           link: 'https://vintics.com',
+          logo: '/project-logos/vintics.png',
           icon: 'chrome',
         },
       ],
@@ -212,7 +238,7 @@ export const content = {
         'Automation Enthusiast',
       ],
       description:
-        'Passionate Full Stack developer, I craft complete digital experiences — from the user interface to server-side data management. Curious and driven, I taught myself a wide range of languages and frameworks, from the web to iOS apps published on the App Store.',
+        'Full-Stack Developer specialising in web applications and e-commerce tools. I build complete products, from user interfaces to APIs, databases, payments and deployments, turning business needs into smooth, reliable solutions.',
       downloadCV: 'Download my CV',
       contactMe: 'Get in touch',
       scroll: 'Scroll to explore',
@@ -221,13 +247,13 @@ export const content = {
       title: 'About',
       subtitle: 'Who am I?',
       paragraphs: [
-        'As a passionate Full Stack developer, my curiosity and determination have guided me through an enriching learning journey. My enthusiasm for technology allowed me to learn a wide range of programming languages and frameworks, giving me solid foundations in building complete web solutions.',
-        'Alongside my professional experience, I design and build custom websites, applications and tools — including an iOS fitness app published on the App Store and several web projects for clients.',
+        'I am a Full-Stack Developer specialising in web applications and e-commerce tools. I build complete products, from user interfaces to APIs, databases, payment systems and deployments. I enjoy turning business needs into smooth, reliable solutions.',
+        'As an independent developer since 2020, I build bespoke websites, apps and tools. My work includes iOS apps published on the App Store, a website-building platform for tradespeople and a Vinted automation extension. After six months travelling across Asia, I am now based in Taiwan, where I have strengthened my independence, English communication and ability to work remotely.',
       ],
       infoTitle: 'Details',
       info: [
         { label: 'Name', value: 'Lucas Fabregoule' },
-        { label: 'Location', value: 'Granges-les-Beaumont, France' },
+        { label: 'Location', value: 'Taiwan' },
         { label: 'Phone', value: '(+33) 6 62 13 55 22' },
         { label: 'Email', value: 'lucasfabregoule@gmail.com' },
         { label: 'Languages', value: 'French, English' },
@@ -251,7 +277,21 @@ export const content = {
       title: 'Journey',
       workTitle: 'Work experience',
       eduTitle: 'Education',
+      viewWork: 'View selected work',
       jobs: [
+        {
+          period: '2026',
+          company: 'FYNERI LLC / TRIVIAN',
+          role: 'Full-Stack Developer',
+          location: 'Remote',
+          points: [
+            'Built an e-commerce dashboard connected to Shopify and WooCommerce',
+            'Integrated Stripe, PayPal and Shopify Payments',
+            'Built sales funnels, checkout flows, promotions and upsells',
+            'Synchronised products, orders and disputes through APIs',
+            'Implemented email authentication, webhooks and subscriptions',
+          ],
+        },
         {
           period: '2025',
           company: 'Air Liquide',
@@ -267,7 +307,7 @@ export const content = {
           ],
         },
         {
-          period: '2022 — Present',
+          period: '2020 — Present',
           company: 'Independent Developer',
           role: 'Full Stack Developer',
           location: 'Remote',
@@ -296,8 +336,8 @@ export const content = {
         {
           period: '2023',
           school: '42 School — Lyon',
-          degree: 'Piscine — C Programming',
-          text: 'An immersive programming experience where, thanks to the peer-learning spirit of the school, I built solid foundations in the C language.',
+          degree: 'Piscine — Intensive Programming Program',
+          text: 'Completed École 42’s Piscine, an intensive programming experience focused on peer learning, collaboration and problem-solving.',
         },
         {
           period: '2021',
@@ -315,10 +355,10 @@ export const content = {
     },
     skills: {
       title: 'Skills',
-      subtitle: 'The technologies I work with every day',
+      subtitle: 'Technologies and tools I use to build web and e-commerce products',
     },
     projects: {
-      title: 'My projects',
+      title: 'My Personal Projects',
       items: [
         {
           title: 'Lukops',
@@ -326,6 +366,7 @@ export const content = {
           text: 'All-in-one website builder for craftsmen and independents: website, hosting, domain name and online booking, in just a few clicks.',
           tags: ['Websites', 'Hosting', 'Bookings'],
           link: 'https://lukops.com',
+          logo: '/project-logos/lukops.svg',
           icon: 'globe',
         },
         {
@@ -334,7 +375,16 @@ export const content = {
           text: 'An iOS app connecting consumers with local producers: book fresh, organic and local products directly from farms near you.',
           tags: ['Swift', 'iOS', 'App Store'],
           link: 'https://apps.apple.com/fr/app/farmly/id6738429325',
+          logo: '/project-logos/farmly.jpg',
           icon: 'seedling',
+        },
+        {
+          title: 'Un Zeste',
+          domain: 'iOS',
+          text: 'A cooking app for saving and organising recipes, including ones discovered in Instagram Reels.',
+          tags: ['Swift', 'iOS', 'App Store'],
+          logo: '/project-logos/un-zeste.png',
+          icon: 'appstore',
         },
         {
           title: 'Arise',
@@ -342,6 +392,7 @@ export const content = {
           text: 'An iOS workout-tracking app designed, built and published on the App Store: training programs, progress tracking and statistics.',
           tags: ['Swift', 'iOS', 'App Store'],
           link: 'https://apps.apple.com/fr/app/arise-shadow-strength/id6759224854',
+          logo: '/project-logos/arise.jpg',
           icon: 'dumbbell',
         },
         {
@@ -350,6 +401,7 @@ export const content = {
           text: 'The ultimate Chrome extension for Vinted: real-time monitoring, advanced filters and offer automation for resellers.',
           tags: ['Chrome Extension', 'Monitoring', 'Automation'],
           link: 'https://vintics.com',
+          logo: '/project-logos/vintics.png',
           icon: 'chrome',
         },
       ],

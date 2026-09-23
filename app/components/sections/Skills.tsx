@@ -2,18 +2,28 @@
 
 import { useContext } from 'react';
 import { BiLogoTypescript } from 'react-icons/bi';
-import { DiMysql } from 'react-icons/di';
 import {
   FaCss3,
-  FaGitAlt,
+  FaCode,
   FaHtml5,
+  FaKey,
   FaNodeJs,
   FaPython,
   FaReact,
+  FaRobot,
   FaSwift,
 } from 'react-icons/fa';
 import { IoLogoJavascript } from 'react-icons/io5';
 import { RiNextjsLine, RiTailwindCssFill } from 'react-icons/ri';
+import {
+  SiDocker,
+  SiGithub,
+  SiPostgresql,
+  SiRailway,
+  SiShopify,
+  SiStripe,
+  SiWoocommerce,
+} from 'react-icons/si';
 import { content } from '../../data/content';
 import { LanguageContext } from '../../contexts/LanguageContext';
 import Reveal from '../Reveal';
@@ -27,11 +37,19 @@ const skills = [
   { icon: FaNodeJs, name: 'Node.js', color: '#68a063' },
   { icon: FaPython, name: 'Python', color: '#ffd343' },
   { icon: FaSwift, name: 'Swift / iOS', color: '#f05138' },
+  { icon: SiPostgresql, name: 'PostgreSQL / SQL', color: '#4169e1' },
+  { icon: FaCode, name: 'REST APIs / Webhooks', color: '#a78bfa' },
+  { icon: FaKey, name: 'OAuth', color: '#fbbf24' },
+  { icon: SiShopify, name: 'Shopify', color: '#95bf47' },
+  { icon: SiWoocommerce, name: 'WooCommerce', color: '#96588a' },
+  { icon: SiStripe, name: 'Stripe / Payments', color: '#635bff' },
   { icon: FaHtml5, name: 'HTML5', color: '#e34c26' },
   { icon: FaCss3, name: 'CSS3', color: '#264de4' },
-  { icon: RiTailwindCssFill, name: 'Tailwind', color: '#38bdf8' },
-  { icon: DiMysql, name: 'SQL', color: '#00758f' },
-  { icon: FaGitAlt, name: 'Git', color: '#f05033' },
+  { icon: RiTailwindCssFill, name: 'Tailwind CSS', color: '#38bdf8' },
+  { icon: SiGithub, name: 'GitHub', color: '#ffffff' },
+  { icon: SiRailway, name: 'Railway', color: '#ffffff' },
+  { icon: SiDocker, name: 'Docker', color: '#2496ed' },
+  { icon: FaRobot, name: 'AI development tools', color: '#a78bfa' },
 ];
 
 export default function Skills() {

@@ -1,10 +1,12 @@
 'use client';
 
-import { useContext } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { FaBriefcase, FaGraduationCap } from 'react-icons/fa';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { content } from '../../data/content';
 import { LanguageContext } from '../../contexts/LanguageContext';
 import Reveal from '../Reveal';
+import FyneriShowcase from './FyneriShowcase';
 
 function TimelineItem({
   period,
@@ -14,6 +16,8 @@ function TimelineItem({
   points,
   text,
   index,
+  onClick,
+  actionLabel,
 }: {
   period: string;
   title: string;
@@ -22,6 +26,8 @@ function TimelineItem({
   points?: string[];
   text?: string;
   index: number;
+  onClick?: () => void;
+  actionLabel?: string;
 }) {
   return (
     <Reveal delay={index * 0.1} className="relative pl-8 md:pl-10">
@@ -29,7 +35,19 @@ function TimelineItem({
       <span className="absolute left-0 top-1 h-full w-[2px] bg-gradient-to-b from-cyan-400/60 via-violet-500/30 to-transparent" />
       <span className="absolute -left-[5px] top-1 h-3 w-3 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
 
-      <div className="glass glass-hover mb-10 rounded-2xl p-5 md:p-6">
+      <div
+        className={`glass glass-hover mb-10 rounded-2xl p-5 md:p-6 ${onClick ? 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70' : ''}`}
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        onClick={onClick}
+        onKeyDown={onClick ? (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            onClick();
+          }
+        } : undefined}
+        aria-haspopup={onClick ? 'dialog' : undefined}
+      >
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="chip border-cyan-400/30 text-cyan-300">
             {period}
@@ -58,6 +76,12 @@ function TimelineItem({
             {text}
           </p>
         )}
+        {actionLabel && (
+          <div className="mt-4 flex items-center justify-between border-t border-white/[0.07] pt-3 text-xs font-medium text-cyan-300">
+            <span>{actionLabel}</span>
+            <FaArrowUpRightFromSquare size={12} />
+          </div>
+        )}
       </div>
     </Reveal>
   );
@@ -66,8 +90,11 @@ function TimelineItem({
 export default function Experience() {
   const { language } = useContext(LanguageContext);
   const t = content[language].experience;
+  const [showcaseOpen, setShowcaseOpen] = useState(false);
+  const closeShowcase = useCallback(() => setShowcaseOpen(false), []);
 
   return (
+    <>
     <section id="experience" className="relative px-4 py-24 md:px-8">
       <div className="mx-auto w-full max-w-6xl">
         <Reveal>
@@ -97,6 +124,8 @@ export default function Experience() {
                 location={job.location}
                 points={job.points}
                 index={i}
+                onClick={job.company === 'FYNERI LLC / TRIVIAN' ? () => setShowcaseOpen(true) : undefined}
+                actionLabel={job.company === 'FYNERI LLC / TRIVIAN' ? t.viewWork : undefined}
               />
             ))}
           </div>
@@ -126,5 +155,7 @@ export default function Experience() {
         </div>
       </div>
     </section>
+    <FyneriShowcase open={showcaseOpen} onClose={closeShowcase} />
+    </>
   );
 }

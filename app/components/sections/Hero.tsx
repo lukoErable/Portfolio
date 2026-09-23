@@ -75,7 +75,7 @@ function ProjectShowcase() {
       >
         {t.title}
       </motion.p>
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {projects.map((project, i) => {
           const Icon = projectIcons[project.icon] ?? FaGlobe;
           const Card = project.link ? motion.a : motion.div;
@@ -105,6 +105,7 @@ function ProjectShowcase() {
                 scale: 1,
                 rotate: fan,
               }}
+              whileHover={{ zIndex: 20 }}
               transition={{
                 type: 'spring',
                 stiffness: 85,
@@ -114,38 +115,61 @@ function ProjectShowcase() {
               className="block h-full cursor-pointer"
             >
             <motion.div
-              whileHover={{ y: -12, scale: 1.03, rotate: -fan }}
+              whileHover={{ y: -8, scale: 1.04, rotate: -fan, zIndex: 20 }}
               transition={{ type: 'spring', stiffness: 400, damping: 24 }}
-              className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-colors hover:border-cyan-400/50 hover:shadow-[0_0_40px_rgba(34,211,238,0.25)]"
+              className="group relative flex h-56 flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-colors hover:border-cyan-400/50 hover:shadow-[0_0_40px_rgba(34,211,238,0.25)]"
             >
               {/* Visual header */}
-              <div className="relative flex h-32 items-center justify-center bg-gradient-to-br from-cyan-500/15 via-blue-600/10 to-violet-600/25">
+              <div className="relative flex h-20 shrink-0 items-center justify-center bg-gradient-to-br from-cyan-500/15 via-blue-600/10 to-violet-600/25">
                 <div className="absolute inset-0 opacity-40 [background:radial-gradient(circle_at_30%_20%,rgba(34,211,238,0.25),transparent_55%)]" />
-                <Icon className="relative text-5xl text-cyan-300/80 drop-shadow-[0_0_18px_rgba(34,211,238,0.5)] transition-transform duration-500 group-hover:scale-110" />
+                {project.logo ? (
+                  <Image
+                    src={project.logo}
+                    alt={`${project.title} logo`}
+                    width={56}
+                    height={56}
+                    className="relative h-14 w-14 rounded-xl object-contain drop-shadow-[0_0_18px_rgba(34,211,238,0.25)] transition-transform duration-500 group-hover:scale-110"
+                  />
+                ) : (
+                  <Icon className="relative text-4xl text-cyan-300/80 drop-shadow-[0_0_18px_rgba(34,211,238,0.5)] transition-transform duration-500 group-hover:scale-110" />
+                )}
                 <span className="absolute right-3 top-3 text-gray-500 transition-all duration-300 group-hover:text-cyan-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   {project.link && <FaArrowUpRightFromSquare size={13} />}
                 </span>
               </div>
 
               {/* Details */}
-              <div className="p-5">
+              <div className="relative min-h-0 flex-1 p-3">
                 <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="font-display text-lg font-bold text-white">
+                  <h3 className="truncate font-display text-base font-bold text-white">
                     {project.title}
                   </h3>
-                  <span className="shrink-0 text-[11px] font-medium text-cyan-400/80">
+                  <span className="shrink-0 text-[10px] font-medium text-cyan-400/80">
                     {project.domain}
                   </span>
                 </div>
-                <p className="mt-2 text-xs leading-relaxed text-gray-400">
+                <p className="mt-1 line-clamp-1 text-xs leading-relaxed text-gray-400 group-hover:line-clamp-4">
                   {project.text}
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-2 flex flex-wrap gap-1">
                   {project.tags.map((tag) => (
                     <span key={tag} className="chip">
                       {tag}
                     </span>
                   ))}
+                </div>
+                <div className="pointer-events-none absolute inset-0 z-10 rounded-b-2xl bg-slate-950/95 p-3 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="truncate font-display text-base font-bold text-white">
+                      {project.title}
+                    </h3>
+                    <span className="shrink-0 text-[10px] font-medium text-cyan-400/80">
+                      {project.domain}
+                    </span>
+                  </div>
+                  <p className="mt-2 line-clamp-5 text-xs leading-relaxed text-gray-300">
+                    {project.text}
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -163,8 +187,12 @@ export default function Hero() {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = '/cv.pdf';
-    link.setAttribute('download', 'CV-Lucas-Fabregoule.pdf');
+    const isEnglish = language === 'en';
+    link.href = isEnglish ? '/cv-en.pdf' : '/cv.pdf';
+    link.setAttribute(
+      'download',
+      isEnglish ? 'CV-Lucas-Fabregoule-EN.pdf' : 'CV-Lucas-Fabregoule.pdf',
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
