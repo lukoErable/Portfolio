@@ -43,9 +43,10 @@ function wanderPoint(from: Point): Point {
 const EASE_X = [0.22, 1, 0.36, 1] as const;
 const EASE_Y = [0.65, 0, 0.35, 1] as const;
 
+/* Quick enough to land before the block's frame shows up (CURSOR_LEAD_MS) */
 function travelTime(from: Point, to: Point) {
   const dist = Math.hypot(to.x - from.x, to.y - from.y);
-  return Math.min(1.1, Math.max(0.45, dist / 1300));
+  return Math.min(0.34, Math.max(0.18, dist / 2800));
 }
 
 function AgentCursor({
@@ -258,11 +259,10 @@ export default function AgentCursors() {
   const [tasks, setTasks] = useState<(BuildEvent | null)[]>(agents.map(() => null));
   const finished = total > 0 && done >= total;
 
-  /* Hand each new layer to the next agent in turn */
+  /* Hand each new layer to the agent it was booked for */
   useEffect(() => {
     if (!lastEvent) return;
-    const i = lastEvent.id % agents.length;
-    setTasks((prev) => prev.map((t, j) => (j === i ? lastEvent : t)));
+    setTasks((prev) => prev.map((t, j) => (j === lastEvent.agent ? lastEvent : t)));
   }, [lastEvent]);
 
   if (!enabled) return null;

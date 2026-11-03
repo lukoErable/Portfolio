@@ -37,7 +37,7 @@ export default function Build({
   const ref = useRef<HTMLDivElement>(null);
   /* Blocks start building as soon as they peek into view */
   const inView = useInViewOnce(ref, '0px 0px -4% 0px');
-  const { enabled, register, unregister, built } = useBuildActions();
+  const { enabled, register, unregister, claim, built } = useBuildActions();
   const [phase, setPhase] = useState<Phase>('waiting');
   const [size, setSize] = useState({ w: 0, h: 0 });
 
@@ -53,26 +53,28 @@ export default function Build({
 
     if (!enabled) {
       setPhase('done');
-      built(label, el);
+      built();
       return;
     }
 
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
-    const start = delay * DELAY_SCALE * 1000;
-
-    at(start, () => {
-      setSize({ w: Math.round(el.offsetWidth), h: Math.round(el.offsetHeight) });
-      setPhase(frame ? 'framing' : 'filling');
-      if (!frame) built(label, el);
-    });
-    if (frame) {
-      at(start + FRAME_MS, () => {
-        setPhase('filling');
-        built(label, el);
+    at(delay * DELAY_SCALE * 1000, () => {
+      /* Wait for an agent cursor to get here before showing anything */
+      const start = claim(label, el);
+      at(start, () => {
+        setSize({ w: Math.round(el.offsetWidth), h: Math.round(el.offsetHeight) });
+        setPhase(frame ? 'framing' : 'filling');
+        if (!frame) built();
       });
-    }
-    at(start + (frame ? FRAME_MS : 0) + FILL_MS + SETTLE_MS, () => setPhase('done'));
+      if (frame) {
+        at(start + FRAME_MS, () => {
+          setPhase('filling');
+          built();
+        });
+      }
+      at(start + (frame ? FRAME_MS : 0) + FILL_MS + SETTLE_MS, () => setPhase('done'));
+    });
 
     return () => timers.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
