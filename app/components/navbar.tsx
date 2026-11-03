@@ -2,15 +2,14 @@
 
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaArrowRight, FaBars, FaTimes } from 'react-icons/fa';
 import { content } from '../data/content';
 import { LanguageContext } from '../contexts/LanguageContext';
 
 const sections = [
-  { id: 'home', key: 'home' },
-  { id: 'about', key: 'about' },
+  { id: 'work', key: 'projects' },
   { id: 'experience', key: 'experience' },
-  { id: 'skills', key: 'skills' },
+  { id: 'about', key: 'about' },
   { id: 'contact', key: 'contact' },
 ] as const;
 
@@ -21,12 +20,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-  });
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   const t = content[language].nav;
+  const ui = content[language].ui;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -38,9 +35,9 @@ export default function Navbar() {
           if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
-      { rootMargin: '-40% 0px -55% 0px' }
+      { rootMargin: '-40% 0px -55% 0px' },
     );
-    sections.forEach(({ id }) => {
+    ['home', ...sections.map((s) => s.id)].forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -53,96 +50,93 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? 'glass shadow-lg shadow-black/30' : 'bg-transparent'
+      className={`fixed top-0 z-50 w-full border-b transition-colors duration-300 ${
+        scrolled ? 'border-white/[0.08] bg-ink/85 backdrop-blur-md' : 'border-transparent'
       }`}
     >
-      {/* Scroll progress bar */}
       <motion.div
         style={{ scaleX: progress }}
-        className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-cyan-400 to-violet-500"
+        className="absolute bottom-[-1px] left-0 h-px w-full origin-left bg-accent"
       />
 
-      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-8">
-        <div className="flex items-center gap-4">
-          <a href="#home" className="flex items-end gap-1.5">
-            <span className="font-display text-2xl font-bold text-white">
-              Lucas
-            </span>
-            <span className="mb-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
-          </a>
-          <button
-            onClick={toggleLanguage}
-            className="chip cursor-pointer font-semibold transition-colors hover:border-cyan-400/50 hover:text-cyan-300"
-          >
-            {language === 'en' ? 'FR' : 'EN'}
-          </button>
-        </div>
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
+        <a href="#home" className="flex items-start gap-1">
+          <span className="font-display text-2xl uppercase tracking-tight text-white">
+            Lucas
+          </span>
+          <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
+        </a>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-8 md:flex">
           {sections.map(({ id, key }) => (
             <a
               key={id}
               href={`#${id}`}
-              className={`relative text-sm font-medium transition-colors ${
-                active === id ? 'text-cyan-300' : 'text-gray-400 hover:text-white'
+              className={`text-sm transition-colors ${
+                active === id ? 'text-white' : 'text-white/50 hover:text-white'
               }`}
             >
+              {active === id && <span className="mr-1.5 text-accent">●</span>}
               {t[key]}
-              {active === id && (
-                <motion.span
-                  layoutId="nav-underline"
-                  className="absolute -bottom-1.5 left-0 h-[2px] w-full bg-gradient-to-r from-cyan-400 to-violet-500"
-                />
-              )}
             </a>
           ))}
         </div>
 
-        <button
-          className="text-gray-200 md:hidden"
-          onClick={() => setIsOpen(true)}
-          aria-label="Ouvrir le menu"
-        >
-          <FaBars size={22} />
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={toggleLanguage}
+            className="font-mono text-xs text-white/50 transition-colors hover:text-white"
+            aria-label="Changer de langue"
+          >
+            <span className={language === 'fr' ? 'text-white' : ''}>FR</span>
+            <span className="mx-1 text-white/20">/</span>
+            <span className={language === 'en' ? 'text-white' : ''}>EN</span>
+          </button>
+          <a
+            href="#contact"
+            className="group hidden items-center gap-2 text-sm font-medium text-white md:flex"
+          >
+            {ui.letsTalk}
+            <FaArrowRight
+              size={11}
+              className="-rotate-45 text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </a>
+          <button
+            className="text-white md:hidden"
+            onClick={() => setIsOpen(true)}
+            aria-label="Ouvrir le menu"
+          >
+            <FaBars size={20} />
+          </button>
+        </div>
       </nav>
 
-      {/* Mobile drawer */}
+      {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity md:hidden ${
+        className={`fixed inset-0 z-50 bg-ink transition-opacity duration-300 md:hidden ${
           isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
-        onClick={() => setIsOpen(false)}
       >
-        <div
-          className={`absolute right-0 top-0 h-full w-72 border-l border-white/10 bg-[#0a0514]/95 p-6 transition-transform duration-300 ${
-            isOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
-          onClick={(e) => e.stopPropagation()}
+        <button
+          className="absolute right-4 top-4 text-white"
+          onClick={() => setIsOpen(false)}
+          aria-label="Fermer le menu"
         >
-          <button
-            className="absolute right-4 top-4 text-gray-300"
-            onClick={() => setIsOpen(false)}
-            aria-label="Fermer le menu"
-          >
-            <FaTimes size={22} />
-          </button>
-          <div className="mt-14 flex flex-col gap-5">
-            {sections.map(({ id, key }) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                onClick={() => setIsOpen(false)}
-                className={`text-lg font-medium ${
-                  active === id ? 'text-gradient' : 'text-gray-300'
-                }`}
-              >
-                {t[key]}
-              </a>
-            ))}
-          </div>
+          <FaTimes size={22} />
+        </button>
+        <div className="flex h-full flex-col justify-center gap-2 px-6">
+          {sections.map(({ id, key }, i) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={() => setIsOpen(false)}
+              className="headline flex items-baseline gap-4 text-6xl text-white"
+            >
+              <span className="font-mono text-sm text-accent">0{i + 1}</span>
+              {t[key]}
+            </a>
+          ))}
         </div>
       </div>
     </header>

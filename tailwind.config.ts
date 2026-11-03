@@ -9,42 +9,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#050208',
-        surface: 'rgba(255, 255, 255, 0.04)',
-        accent: {
-          DEFAULT: '#22d3ee',
-          violet: '#8b5cf6',
-          blue: '#3b82f6',
+        ink: {
+          DEFAULT: '#08080a',
+          900: '#0d0d10',
+          800: '#141418',
+          700: '#1d1d22',
         },
+        accent: {
+          DEFAULT: '#ff2e3e',
+          soft: '#ff5a66',
+        },
+        /* Editor selection colour used by the build effect */
+        select: '#3d7bff',
       },
       fontFamily: {
-        display: ['var(--font-display)', 'sans-serif'],
+        display: ['var(--font-display)', 'Impact', 'sans-serif'],
         sans: ['var(--font-sans)', 'sans-serif'],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        mono: ['var(--font-mono)', 'monospace'],
       },
       animation: {
-        'spin-slow': 'spin 25s linear infinite',
-        'spin-slower': 'spin 40s linear infinite reverse',
-        float: 'float 6s ease-in-out infinite',
-        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
-        marquee: 'marquee 30s linear infinite',
+        marquee: 'marquee 40s linear infinite',
+        blink: 'blink 1s steps(1) infinite',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-14px)' },
-        },
-        pulseGlow: {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '0.9' },
-        },
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
+        },
+        blink: {
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
         },
       },
     },

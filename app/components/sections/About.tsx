@@ -4,91 +4,99 @@ import { useContext } from 'react';
 import { FaCompass, FaParachuteBox } from 'react-icons/fa';
 import { content } from '../../data/content';
 import { LanguageContext } from '../../contexts/LanguageContext';
-import Reveal from '../Reveal';
-import TiltCard from '../TiltCard';
+import Build from '../build/Build';
+import TypeText from '../build/TypeText';
+import SectionHeader from './SectionHeader';
+
+const interestIcons: Record<string, React.ElementType> = {
+  thrill: FaParachuteBox,
+  travel: FaCompass,
+};
 
 export default function About() {
   const { language } = useContext(LanguageContext);
   const t = content[language].about;
-
-  const interestIcons: Record<string, React.ElementType> = {
-    thrill: FaParachuteBox,
-    travel: FaCompass,
-  };
+  const ui = content[language].ui;
 
   return (
-    <section id="about" className="relative px-4 py-24 md:px-8">
-      <div className="mx-auto w-full max-w-6xl">
-        <Reveal>
-          <p className="text-sm uppercase tracking-[0.3em] text-cyan-400">
-            {t.subtitle}
-          </p>
-          <h2 className="section-title mt-2">
-            <span className="text-gradient">{t.title}</span>
-          </h2>
-        </Reveal>
+    <section id="about" className="canvas-grid relative px-4 py-24 md:px-8 md:py-32">
+      <div className="mx-auto w-full max-w-7xl">
+        <SectionHeader index="03" eyebrow={ui.aboutEyebrow} lines={ui.aboutTitle} />
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-5">
-          {/* Bio */}
-          <Reveal direction="left" className="lg:col-span-3">
-            <div className="glass h-full rounded-2xl p-6 md:p-8">
-              {t.paragraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className="mb-4 text-sm leading-relaxed text-gray-300 last:mb-0 md:text-base"
-                >
-                  {p}
+        {/* Stats */}
+        <div className="grid grid-cols-3 border-y border-white/[0.08]">
+          {ui.stats.map((s, i) => (
+            <Build
+              key={s.label}
+              label={`Stat / ${s.label}`}
+              delay={i * 0.15}
+              className={i ? 'border-l border-white/[0.08]' : ''}
+            >
+              <div className="px-3 py-8 md:px-8 md:py-10">
+                <p className="headline text-6xl text-white md:text-8xl">
+                  {s.value}
+                  <span className="text-accent">.</span>
                 </p>
-              ))}
-              <div className="mt-8">
-                <h3 className="mb-4 font-display text-lg font-semibold text-white">
-                  {t.interestsTitle}
-                </h3>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {t.interests.map((it) => {
-                    const Icon = interestIcons[it.icon] ?? FaCompass;
-                    return (
-                      <TiltCard key={it.title}>
-                        <div className="glass glass-hover h-full rounded-2xl p-4">
-                          <Icon className="mb-2 text-2xl text-cyan-400" />
-                          <h4 className="font-semibold text-white">
-                            {it.title}
-                          </h4>
-                          <p className="mt-1 text-xs text-gray-400 md:text-sm">
-                            {it.text}
-                          </p>
-                        </div>
-                      </TiltCard>
-                    );
-                  })}
-                </div>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-wider text-white/50 md:text-xs">
+                  {s.label}
+                </p>
               </div>
-            </div>
-          </Reveal>
+            </Build>
+          ))}
+        </div>
 
-          {/* Info */}
-          <Reveal direction="right" delay={0.15} className="lg:col-span-2">
-            <div className="glass h-full rounded-2xl p-6 md:p-8">
-              <h3 className="mb-6 font-display text-lg font-semibold text-white">
-                {t.infoTitle}
-              </h3>
-              <ul className="space-y-4">
-                {t.info.map((row) => (
-                  <li
-                    key={row.label}
-                    className="flex flex-col border-b border-white/5 pb-3 last:border-0"
-                  >
-                    <span className="text-xs uppercase tracking-wider text-gray-500">
-                      {row.label}
-                    </span>
-                    <span className="mt-0.5 text-sm text-gray-200 md:text-base">
-                      {row.value}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+        <div className="mt-16 grid gap-12 lg:grid-cols-12">
+          {/* Bio */}
+          <div className="space-y-6 lg:col-span-7">
+            {t.paragraphs.map((p, i) => (
+              <Build key={i} label={`Text / Paragraph ${i + 1}`} delay={i * 0.2}>
+                <p
+                  className={
+                    i === 0
+                      ? 'text-lg leading-relaxed text-white md:text-2xl md:leading-snug'
+                      : 'text-sm leading-relaxed text-white/50 md:text-base'
+                  }
+                >
+                  <TypeText text={p} speed={12} />
+                </p>
+              </Build>
+            ))}
+
+            <div className="grid gap-4 pt-4 sm:grid-cols-2">
+              {t.interests.map((it, i) => {
+                const Icon = interestIcons[it.icon] ?? FaCompass;
+                return (
+                  <Build key={it.title} label={`Card / ${it.icon}`} delay={i * 0.15}>
+                    <div className="h-full border border-white/[0.08] bg-ink-900/60 p-5">
+                      <Icon className="mb-3 text-xl text-accent" />
+                      <h3 className="font-semibold text-white">{it.title}</h3>
+                      <p className="mt-1 text-sm text-white/50">{it.text}</p>
+                    </div>
+                  </Build>
+                );
+              })}
             </div>
-          </Reveal>
+          </div>
+
+          {/* Info sheet */}
+          <Build label="Table / Details" className="lg:col-span-5" delay={0.2}>
+            <div className="border border-white/[0.08] bg-ink-900/60">
+              <p className="eyebrow border-b border-white/[0.08] px-5 py-4">{t.infoTitle}</p>
+              <dl>
+                {t.info.map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex items-baseline justify-between gap-4 border-b border-white/[0.08] px-5 py-4 last:border-0"
+                  >
+                    <dt className="font-mono text-[11px] uppercase tracking-wider text-white/40">
+                      {row.label}
+                    </dt>
+                    <dd className="text-right text-sm text-white">{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </Build>
         </div>
       </div>
     </section>

@@ -1,161 +1,128 @@
 'use client';
 
 import { useCallback, useContext, useState } from 'react';
-import { FaBriefcase, FaGraduationCap } from 'react-icons/fa';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { FaArrowRight } from 'react-icons/fa';
 import { content } from '../../data/content';
 import { LanguageContext } from '../../contexts/LanguageContext';
-import Reveal from '../Reveal';
+import Build from '../build/Build';
 import FyneriShowcase from './FyneriShowcase';
+import SectionHeader from './SectionHeader';
 
-function TimelineItem({
-  period,
-  title,
-  subtitle,
-  location,
-  points,
-  text,
-  index,
-  onClick,
-  actionLabel,
-}: {
-  period: string;
-  title: string;
-  subtitle: string;
-  location?: string;
-  points?: string[];
-  text?: string;
-  index: number;
-  onClick?: () => void;
-  actionLabel?: string;
-}) {
-  return (
-    <Reveal delay={index * 0.1} className="relative pl-8 md:pl-10">
-      {/* Line + dot */}
-      <span className="absolute left-0 top-1 h-full w-[2px] bg-gradient-to-b from-cyan-400/60 via-violet-500/30 to-transparent" />
-      <span className="absolute -left-[5px] top-1 h-3 w-3 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
-
-      <div
-        className={`glass glass-hover mb-10 rounded-2xl p-5 md:p-6 ${onClick ? 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70' : ''}`}
-        role={onClick ? 'button' : undefined}
-        tabIndex={onClick ? 0 : undefined}
-        onClick={onClick}
-        onKeyDown={onClick ? (event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            onClick();
-          }
-        } : undefined}
-        aria-haspopup={onClick ? 'dialog' : undefined}
-      >
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="chip border-cyan-400/30 text-cyan-300">
-            {period}
-          </span>
-          {location && <span className="chip">{location}</span>}
-        </div>
-        <h3 className="mt-3 font-display text-lg font-bold text-white md:text-xl">
-          {title}
-        </h3>
-        <p className="text-sm font-medium text-gradient">{subtitle}</p>
-        {points && (
-          <ul className="mt-3 space-y-1.5">
-            {points.map((p, i) => (
-              <li
-                key={i}
-                className="flex items-start gap-2 text-xs text-gray-400 md:text-sm"
-              >
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" />
-                {p}
-              </li>
-            ))}
-          </ul>
-        )}
-        {text && (
-          <p className="mt-3 text-xs leading-relaxed text-gray-400 md:text-sm">
-            {text}
-          </p>
-        )}
-        {actionLabel && (
-          <div className="mt-4 flex items-center justify-between border-t border-white/[0.07] pt-3 text-xs font-medium text-cyan-300">
-            <span>{actionLabel}</span>
-            <FaArrowUpRightFromSquare size={12} />
-          </div>
-        )}
-      </div>
-    </Reveal>
-  );
-}
+const SHOWCASE_COMPANY = 'FYNERI LLC / TRIVIAN';
 
 export default function Experience() {
   const { language } = useContext(LanguageContext);
   const t = content[language].experience;
+  const ui = content[language].ui;
   const [showcaseOpen, setShowcaseOpen] = useState(false);
   const closeShowcase = useCallback(() => setShowcaseOpen(false), []);
 
   return (
     <>
-    <section id="experience" className="relative px-4 py-24 md:px-8">
-      <div className="mx-auto w-full max-w-6xl">
-        <Reveal>
-          <h2 className="section-title">
-            <span className="text-gradient">{t.title}</span>
-          </h2>
-        </Reveal>
+      <section
+        id="experience"
+        className="relative overflow-hidden bg-gradient-to-br from-[#1a0a10] via-ink to-ink px-4 pb-24 pt-16 md:px-8 md:pb-32 md:pt-24"
+      >
+        <div className="mx-auto grid w-full max-w-7xl gap-16 lg:grid-cols-12 lg:gap-12">
+          {/* Left: headline + education */}
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-28">
+              <SectionHeader index="02" eyebrow={ui.journeyEyebrow} lines={ui.journeyTitle} />
 
-        <div className="mt-12 grid gap-12 lg:grid-cols-2">
-          <div>
-            <Reveal>
-              <div className="mb-8 flex items-center gap-3">
-                <span className="glass rounded-xl p-3 text-cyan-400">
-                  <FaBriefcase size={20} />
-                </span>
-                <h3 className="font-display text-xl font-semibold text-white md:text-2xl">
-                  {t.workTitle}
-                </h3>
+              <p className="eyebrow mb-4">{t.eduTitle}</p>
+              <div className="border-t border-white/[0.08]">
+                {t.education.map((edu, i) => (
+                  <Build key={edu.school} label={`Row / ${edu.period}`} delay={i * 0.12}>
+                    <div className="flex items-baseline gap-4 border-b border-white/[0.08] py-4">
+                      <span className="w-12 shrink-0 font-mono text-xs text-accent">
+                        {edu.period}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-white">{edu.school}</p>
+                        <p className="mt-0.5 text-sm text-white/50">{edu.degree}</p>
+                      </div>
+                    </div>
+                  </Build>
+                ))}
               </div>
-            </Reveal>
-            {t.jobs.map((job, i) => (
-              <TimelineItem
-                key={job.company + job.period}
-                period={job.period}
-                title={job.company}
-                subtitle={job.role}
-                location={job.location}
-                points={job.points}
-                index={i}
-                onClick={job.company === 'FYNERI LLC / TRIVIAN' ? () => setShowcaseOpen(true) : undefined}
-                actionLabel={job.company === 'FYNERI LLC / TRIVIAN' ? t.viewWork : undefined}
-              />
-            ))}
+            </div>
           </div>
 
-          <div>
-            <Reveal>
-              <div className="mb-8 flex items-center gap-3">
-                <span className="glass rounded-xl p-3 text-violet-400">
-                  <FaGraduationCap size={22} />
-                </span>
-                <h3 className="font-display text-xl font-semibold text-white md:text-2xl">
-                  {t.eduTitle}
-                </h3>
-              </div>
-            </Reveal>
-            {t.education.map((edu, i) => (
-              <TimelineItem
-                key={edu.school}
-                period={edu.period}
-                title={edu.school}
-                subtitle={edu.degree}
-                text={edu.text}
-                index={i}
-              />
-            ))}
+          {/* Right: work experience */}
+          <div className="lg:col-span-7 lg:pt-2">
+            <div className="mb-6 flex items-center justify-between">
+              <p className="eyebrow">{ui.selectedJobs}</p>
+              <p className="font-mono text-[11px] text-white/30">2020 — 2026</p>
+            </div>
+            <div className="border-t border-white/[0.08]">
+              {t.jobs.map((job, i) => {
+                const hasShowcase = job.company === SHOWCASE_COMPANY;
+                return (
+                  <Build key={job.company + job.period} label={`Row / ${job.company}`} delay={0.1}>
+                    <article
+                      className={`group relative border-b border-white/[0.08] py-8 transition-colors ${
+                        hasShowcase
+                          ? 'cursor-pointer hover:bg-white/[0.02] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent'
+                          : ''
+                      }`}
+                      role={hasShowcase ? 'button' : undefined}
+                      tabIndex={hasShowcase ? 0 : undefined}
+                      aria-haspopup={hasShowcase ? 'dialog' : undefined}
+                      onClick={hasShowcase ? () => setShowcaseOpen(true) : undefined}
+                      onKeyDown={
+                        hasShowcase
+                          ? (e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setShowcaseOpen(true);
+                              }
+                            }
+                          : undefined
+                      }
+                    >
+                      <div className="flex items-start gap-4 md:gap-6">
+                        <span className="mt-1 font-mono text-[11px] text-accent">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
+                            <div>
+                              <h3 className="headline text-3xl text-white md:text-4xl">
+                                {job.company}
+                              </h3>
+                              <p className="mt-2 font-mono text-[11px] uppercase tracking-wider text-white/50">
+                                {job.role} · {job.location}
+                              </p>
+                            </div>
+                            <span className="headline text-3xl text-accent md:text-4xl">
+                              {job.period}
+                            </span>
+                          </div>
+                          <ul className="mt-5 grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+                            {job.points.map((p) => (
+                              <li key={p} className="flex gap-2 text-[13px] leading-snug text-white/50">
+                                <span className="mt-[7px] h-px w-2 shrink-0 bg-white/30" />
+                                {p}
+                              </li>
+                            ))}
+                          </ul>
+                          {hasShowcase && (
+                            <span className="mt-5 inline-flex items-center gap-2 border border-accent/40 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-accent-soft transition-colors group-hover:bg-accent group-hover:text-white">
+                              {t.viewWork}
+                              <FaArrowRight size={10} className="-rotate-45" />
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </article>
+                  </Build>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-    <FyneriShowcase open={showcaseOpen} onClose={closeShowcase} />
+      </section>
+      <FyneriShowcase open={showcaseOpen} onClose={closeShowcase} />
     </>
   );
 }

@@ -2,19 +2,21 @@
 
 import emailjs from 'emailjs-com';
 import { useContext, useState } from 'react';
-import { FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { content } from '../../data/content';
 import { LanguageContext } from '../../contexts/LanguageContext';
-import Reveal from '../Reveal';
+import Build from '../build/Build';
+import SectionHeader from './SectionHeader';
 
 const inputClass =
-  'w-full rounded-xl border border-white/10 bg-white/[0.04] p-3 text-sm text-gray-200 placeholder-gray-500 outline-none transition-all focus:border-cyan-400/60 focus:shadow-[0_0_15px_rgba(34,211,238,0.15)]';
+  'w-full border-b border-white/15 bg-transparent py-3 text-base text-white placeholder-white/30 outline-none transition-colors focus:border-accent';
 
 export default function Contact() {
   const { language } = useContext(LanguageContext);
   const t = content[language].contact;
+  const ui = content[language].ui;
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>(
-    'idle'
+    'idle',
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,72 +29,39 @@ export default function Contact() {
 
     emailjs.sendForm(serviceID, templateID, '#contact-form', userID).then(
       () => setStatus('sent'),
-      () => setStatus('error')
+      () => setStatus('error'),
     );
   };
 
   const infos = [
-    { icon: FaPhone, label: t.phoneLabel, value: '+33 6 62 13 55 22' },
-    { icon: FaEnvelope, label: t.emailLabel, value: 'lucasfabregoule@gmail.com' },
-    { icon: FaMapMarkerAlt, label: t.addressLabel, value: t.address },
+    { label: t.emailLabel, value: 'lucasfabregoule@gmail.com', href: 'mailto:lucasfabregoule@gmail.com' },
+    { label: t.phoneLabel, value: '+33 6 62 13 55 22', href: 'tel:+33662135522' },
+    { label: t.addressLabel, value: t.address },
   ];
 
   return (
-    <section id="contact" className="relative px-4 py-24 md:px-8">
-      <div className="mx-auto w-full max-w-6xl">
-        <Reveal>
-          <h2 className="section-title">
-            <span className="text-gradient">{t.title}</span>
-          </h2>
-          <p className="mt-3 text-sm text-gray-400 md:text-base">
-            {t.subtitle}
-          </p>
-        </Reveal>
+    <section id="contact" className="relative px-4 py-24 md:px-8 md:py-32">
+      <div className="mx-auto w-full max-w-7xl">
+        <SectionHeader index="04" eyebrow={ui.contactEyebrow} lines={ui.contactTitle} />
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-5">
-          <Reveal direction="left" className="lg:col-span-3">
-            <form
-              id="contact-form"
-              onSubmit={handleSubmit}
-              className="glass space-y-4 rounded-2xl p-6 md:p-8"
-            >
-              <div className="grid gap-4 sm:grid-cols-2">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder={t.name}
-                  className={inputClass}
-                  required
-                />
-                <input
-                  type="text"
-                  name="surname"
-                  placeholder={t.surname}
-                  className={inputClass}
-                  required
-                />
+        <div className="grid gap-16 lg:grid-cols-12">
+          <Build label="Form / Contact" className="lg:col-span-7">
+            <form id="contact-form" onSubmit={handleSubmit} className="space-y-6">
+              <p className="text-white/50">{t.subtitle}</p>
+              <div className="grid gap-6 sm:grid-cols-2">
+                <input type="text" name="name" placeholder={t.name} className={inputClass} required />
+                <input type="text" name="surname" placeholder={t.surname} className={inputClass} required />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder={t.email}
-                  className={inputClass}
-                  required
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder={t.phone}
-                  className={inputClass}
-                />
+              <div className="grid gap-6 sm:grid-cols-2">
+                <input type="email" name="email" placeholder={t.email} className={inputClass} required />
+                <input type="tel" name="phone" placeholder={t.phone} className={inputClass} />
               </div>
-              <select name="service" className={inputClass} required>
-                <option value="" className="bg-[#0a0514]">
+              <select name="service" className={`${inputClass} [&:invalid]:text-white/30`} required>
+                <option value="" className="bg-ink-900">
                   {t.selectService}
                 </option>
                 {t.services.map((s) => (
-                  <option key={s} value={s} className="bg-[#0a0514]">
+                  <option key={s} value={s} className="bg-ink-900 text-white">
                     {s}
                   </option>
                 ))}
@@ -100,47 +69,48 @@ export default function Contact() {
               <textarea
                 name="message"
                 placeholder={t.message}
-                className={`${inputClass} h-36 resize-none`}
+                className={`${inputClass} h-32 resize-none`}
                 required
               />
-              <button
-                type="submit"
-                disabled={status === 'sending'}
-                className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 px-6 py-3 font-semibold text-white shadow-[0_0_25px_rgba(34,211,238,0.25)] transition-transform hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
-              >
-                {status === 'sending' ? t.sending : t.send}
-              </button>
-              {status === 'sent' && (
-                <p className="text-sm text-emerald-400">{t.successMessage}</p>
-              )}
-              {status === 'error' && (
-                <p className="text-sm text-red-400">{t.errorMessage}</p>
-              )}
-            </form>
-          </Reveal>
-
-          <Reveal direction="right" delay={0.15} className="lg:col-span-2">
-            <div className="flex h-full flex-col justify-center gap-6">
-              {infos.map((info) => (
-                <div
-                  key={info.label}
-                  className="glass glass-hover flex items-center gap-4 rounded-2xl p-5"
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  id="send-message"
+                  type="submit"
+                  disabled={status === 'sending'}
+                  className="group flex items-center gap-3 bg-accent px-6 py-4 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink disabled:opacity-60"
                 >
-                  <span className="rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-600/20 p-3 text-cyan-400">
-                    <info.icon size={20} />
-                  </span>
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-gray-500">
+                  {status === 'sending' ? t.sending : t.send}
+                  <FaArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
+                </button>
+                {status === 'sent' && <p className="text-sm text-emerald-400">{t.successMessage}</p>}
+                {status === 'error' && <p className="text-sm text-accent-soft">{t.errorMessage}</p>}
+              </div>
+            </form>
+          </Build>
+
+          <div className="lg:col-span-5">
+            <div className="border-t border-white/[0.08]">
+              {infos.map((info, i) => (
+                <Build key={info.label} label={`Row / ${info.label}`} delay={i * 0.15}>
+                  <div className="border-b border-white/[0.08] py-6">
+                    <p className="font-mono text-[11px] uppercase tracking-wider text-white/40">
                       {info.label}
                     </p>
-                    <p className="text-sm font-semibold text-gray-200 md:text-base">
-                      {info.value}
-                    </p>
+                    {info.href ? (
+                      <a
+                        href={info.href}
+                        className="mt-2 block break-all text-lg text-white transition-colors hover:text-accent md:text-xl"
+                      >
+                        {info.value}
+                      </a>
+                    ) : (
+                      <p className="mt-2 text-lg text-white md:text-xl">{info.value}</p>
+                    )}
                   </div>
-                </div>
+                </Build>
               ))}
             </div>
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>

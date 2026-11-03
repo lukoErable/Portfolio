@@ -1,15 +1,19 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Anton, Inter, JetBrains_Mono } from 'next/font/google';
+import AgentCursors from './components/build/AgentCursors';
+import { BuildProvider } from './components/build/BuildContext';
+import BuildHud from './components/build/BuildHud';
 import Navbar from './components/navbar';
-import SceneWrapper from './components/SceneWrapper';
 import { LanguageProvider } from './contexts/LanguageContext';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-const spaceGrotesk = Space_Grotesk({
+const anton = Anton({
   subsets: ['latin'],
+  weight: '400',
   variable: '--font-display',
 });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
   title: 'Lucas Fabregoule — Développeur Full Stack',
@@ -40,12 +44,15 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-sans noise`}
+        className={`${inter.variable} ${anton.variable} ${mono.variable} relative font-sans noise`}
       >
         <LanguageProvider>
-          <SceneWrapper />
-          <Navbar />
-          <div className="relative z-10">{children}</div>
+          <BuildProvider>
+            <Navbar />
+            <div className="relative z-10">{children}</div>
+            <AgentCursors />
+            <BuildHud />
+          </BuildProvider>
         </LanguageProvider>
       </body>
     </html>
