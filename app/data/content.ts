@@ -68,7 +68,7 @@ export const content = {
           location: 'Remote',
           points: [
             'Développement d’un tableau de bord e-commerce connecté à Shopify et WooCommerce',
-            'Intégration de Stripe, PayPal et Shopify Payments',
+            'Intégration de Stripe (paiements et abonnements récurrents avec Stripe Billing), PayPal et Shopify Payments',
             'Création de tunnels de vente, parcours de paiement, promotions et ventes additionnelles',
             'Synchronisation des produits, commandes et litiges via des API',
             'Mise en place de l’authentification par e-mail, de webhooks et d’abonnements',
@@ -316,7 +316,7 @@ export const content = {
           location: 'Remote',
           points: [
             'Built an e-commerce dashboard connected to Shopify and WooCommerce',
-            'Integrated Stripe, PayPal and Shopify Payments',
+            'Integrated Stripe (payments and recurring subscriptions with Stripe Billing), PayPal and Shopify Payments',
             'Built sales funnels, checkout flows, promotions and upsells',
             'Synchronised products, orders and disputes through APIs',
             'Implemented email authentication, webhooks and subscriptions',

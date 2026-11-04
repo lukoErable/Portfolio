@@ -51,7 +51,7 @@ const rows: Tool[][] = [
   [
     { icon: SiShopify, name: 'Shopify', kind: 'E-commerce', color: '#95bf47' },
     { icon: SiWoocommerce, name: 'WooCommerce', kind: 'E-commerce', color: '#a46ad1', iconSize: 30 },
-    { icon: SiStripe, name: 'Stripe', kind: 'Payments', color: '#7a73ff' },
+    { icon: SiStripe, name: 'Stripe', kind: 'Payments & Billing', color: '#7a73ff' },
     { icon: FaCode, name: 'REST / Webhooks', kind: 'API', color: '#a78bfa' },
     { icon: FaKey, name: 'OAuth', kind: 'Auth', color: '#fbbf24' },
     { icon: SiGithub, name: 'GitHub', kind: 'Git', color: '#ffffff' },
